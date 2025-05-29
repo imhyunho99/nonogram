@@ -7,13 +7,13 @@ from rest_framework_simplejwt.tokens import RefreshToken
 from .models import CustomUser
 from .serialzers import RegisterSerializer, LoginSerializer, UserSerializer
 
-class JWTRegisterView(generics.CreateAPIView):
+class RegisterView(generics.CreateAPIView):
     queryset = CustomUser.objects.all()
     serializer_class = RegisterSerializer
     permission_classes = [permissions.AllowAny]
 
 
-class JWTLoginView(APIView):
+class LoginView(APIView):
     permission_classes = [permissions.AllowAny]
     def post(self, request):
 
@@ -34,7 +34,7 @@ class JWTLoginView(APIView):
 from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework_simplejwt.token_blacklist.models import BlacklistedToken, OutstandingToken
 
-class JWTLogoutView(APIView):
+class LogoutView(APIView):
     permission_classes = [permissions.IsAuthenticated]
 
     def post(self, request):
@@ -48,14 +48,14 @@ class JWTLogoutView(APIView):
 
 
 
-class JWTUserDetailView(generics.RetrieveUpdateAPIView):
+class UserDetailView(generics.RetrieveUpdateAPIView):
     permission_classes = [permissions.IsAuthenticated]
     serializer_class = UserSerializer
 
     def get_object(self):
         return self.request.user
 
-class JWTDeleteUserView(APIView):
+class DeleteUserView(APIView):
     permission_classes = [permissions.IsAuthenticated]
 
     def delete(self, request):

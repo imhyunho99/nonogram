@@ -31,6 +31,8 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    'user',
+    'image',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -38,7 +40,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'rest_framework_simplejwt',
-    'User'
+
+
 ]
 
 MIDDLEWARE = [
@@ -142,4 +145,4 @@ REST_FRAMEWORK = {
     "PAGE_SIZE": 10,
 }
 
-AUTH_USER_MODEL = 'User.CustomUser'
+AUTH_USER_MODEL = 'user.CustomUser'
