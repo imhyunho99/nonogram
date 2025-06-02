@@ -1,11 +1,21 @@
 from rest_framework import serializers
-from .models import Image
+from .models import OriginImage, NonogramImage
 
 
-class ImageSerializer(serializers.ModelSerializer):
+class OriginImageSerializer(serializers.ModelSerializer):
     user_email = serializers.EmailField(source='user.email', read_only=True)
 
     class Meta:
-        model = Image
+        model = OriginImage
         fields = ['id', 'image_data', 'uploaded_at', 'user_email']
         read_only_fields = ['uploaded_at', 'user_email']
+
+
+class NonogramImageSerializer(serializers.ModelSerializer):
+    user_email = serializers.EmailField(source='user.email', read_only=True)
+    origin_id = serializers.IntegerField(source='origin.id', read_only=True)
+
+    class Meta:
+        model = NonogramImage
+        fields = ['id', 'origin_id', 'size', 'image_data', 'generated_at', 'user_email']
+        read_only_fields = ['generated_at', 'user_email', 'origin_id']

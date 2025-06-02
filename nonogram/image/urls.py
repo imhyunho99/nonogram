@@ -1,7 +1,12 @@
 from django.urls import path
-from .views import ImageListCreateView, ImageDetailView
+from .views import (
+    OriginImageListCreateView,
+    NonogramImageCreateView,
+    NonogramImageListView
+)
 
 urlpatterns = [
-    path('', ImageListCreateView.as_view(), name='image-list-create'),
-    path('<int:pk>/', ImageDetailView.as_view(), name='image-detail'),
+    path('origin/', OriginImageListCreateView.as_view()),
+    path('nonogram/create/', NonogramImageCreateView.as_view()),
+    path('nonogram/list/', NonogramImageListView.as_view()),
 ]
