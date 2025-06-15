@@ -7,6 +7,6 @@ from .views import (
 
 urlpatterns = [
     path('origin/', OriginImageListCreateView.as_view()),
-    path('nonogram/create/', NonogramImageCreateView.as_view()),
-    path('nonogram/list/', NonogramImageListView.as_view()),
+    path('create/', NonogramImageCreateView.as_view()),
+    path('list/', NonogramImageListView.as_view()),
 ]

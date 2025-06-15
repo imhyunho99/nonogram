@@ -8,7 +8,7 @@ from PIL import Image
 from io import BytesIO
 
 
-class OriginImageListCreateView(generics.ListCreateAPIView):
+class OriginImageListCreateView(generics.ListCreateAPIView):  #collect image data from user and change it GrayScale : Upload only
     queryset = OriginImage.objects.all()
     serializer_class = OriginImageSerializer
     permission_classes = [permissions.IsAuthenticated]
@@ -20,7 +20,7 @@ class OriginImageListCreateView(generics.ListCreateAPIView):
         return self.queryset.filter(user=self.request.user)
 
 
-class NonogramImageCreateView(generics.CreateAPIView):
+class NonogramImageCreateView(generics.CreateAPIView): #create nonogram image by size (can change grid size)
     serializer_class = NonogramImageSerializer
     permission_classes = [permissions.IsAuthenticated]
 
@@ -57,9 +57,9 @@ class NonogramImageCreateView(generics.CreateAPIView):
         return Response(serializer.data, status=status.HTTP_201_CREATED)
 
 
-class NonogramImageListView(generics.ListAPIView):
-    serializer_class = NonogramImageSerializer
+class NonogramImageListView(generics.ListAPIView): #(show maked nonogram image)
+    serializer_class = OriginImageSerializer
     permission_classes = [permissions.IsAuthenticated]
 
     def get_queryset(self):
-        return NonogramImage.objects.filter(user=self.request.user)
+        return OriginImageSerializer.objects.filter(origin__user=self.request.user)
