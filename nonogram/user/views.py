@@ -13,6 +13,7 @@ class RegisterView(generics.CreateAPIView):
     permission_classes = [permissions.AllowAny]
 
 
+
 class LoginView(APIView):
     permission_classes = [permissions.AllowAny]
     def post(self, request):

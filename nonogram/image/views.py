@@ -1,3 +1,5 @@
+from multiprocessing.managers import MakeProxyType
+
 from rest_framework import generics, permissions, status
 from rest_framework.response import Response
 from .models import OriginImage, NonogramImage
@@ -17,6 +19,7 @@ class OriginImageListCreateView(generics.ListCreateAPIView):  #collect image dat
         serializer.save(user=self.request.user)
 
     def get_queryset(self):
+
         return self.queryset.filter(user=self.request.user)
 
 
@@ -57,9 +60,12 @@ class NonogramImageCreateView(generics.CreateAPIView): #create nonogram image by
         return Response(serializer.data, status=status.HTTP_201_CREATED)
 
 
-class NonogramImageListView(generics.ListAPIView): #(show maked nonogram image)
+class NonogramImageListView(generics.ListAPIView):  # (show maked nonogram image)
     serializer_class = OriginImageSerializer
     permission_classes = [permissions.IsAuthenticated]
 
     def get_queryset(self):
-        return OriginImageSerializer.objects.filter(origin__user=self.request.user)
+        print(OriginImage.objects.filter(user_id=self.request.user).query)
+        return OriginImage.objects.filter(user_id=self.request.user)
+
+
