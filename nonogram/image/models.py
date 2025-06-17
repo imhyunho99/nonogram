@@ -33,3 +33,4 @@ class NonogramImage(models.Model):
 
     def __str__(self):
         return f"Nonogram (size {self.size}) from OriginImage {self.origin.id} by {self.user.email}"
+
