@@ -28,37 +28,43 @@ class NonogramImageCreateView(generics.CreateAPIView):
 
     def post(self, request, *args, **kwargs):
         origin_id = request.data.get('origin_id')
-        size = int(request.data.get('size', 10))  # 기본 사이즈 10
-        origin = OriginImage.objects.get(id=origin_id, user=request.user)
+        size = request.data.get('size', 10)
 
-        """try:
-          \  
+        if not origin_id:
+            return Response({"error": "origin_id is required"}, status=status.HTTP_400_BAD_REQUEST)
+        try:
+            size = int(size)
+        except ValueError:
+            return Response({"error": "size must be an integer"}, status=status.HTTP_400_BAD_REQUEST)
+
+        try:
+            origin = OriginImage.objects.get(id=origin_id, user=request.user)
         except OriginImage.DoesNotExist:
-            return Response({"error": "HTTP_404_NOT_FOUND"}, status=status.HTTP_404_NOT_FOUND)"""
+            return Response({"error": f"OriginImage with id={origin_id} not found"}, status=status.HTTP_404_NOT_FOUND)
 
-        image_data = base64.b64decode(origin.image_data)
-        image = Image.open(BytesIO(image_data)).convert("RGB")
+        try:
+            image_data = base64.b64decode(origin.image_data)
+            image = Image.open(BytesIO(image_data)).convert("RGB")
 
-        # 1. Edge Detection → 2. Grayscale → 3. Resize to Grid
-        edge_image = NonogramUtils.edge_detect(image)
-        gray_image = NonogramUtils.to_grayscale(edge_image)
-        processed_image = NonogramUtils.to_grid(gray_image, size)
+            edge_image = NonogramUtils.edge_detect(image)
+            gray_image = NonogramUtils.to_grayscale(edge_image)
+            grid = NonogramUtils.to_grid(gray_image, size)
 
-        buffered = BytesIO()
-        processed_image.save(buffered, format="PNG")
-        encoded_image = base64.b64encode(buffered.getvalue()).decode('utf-8')
-        final_data = f"data:image/png;base64,{encoded_image}"
+            import json
+            grid_str = json.dumps(grid)
 
-        # NonogramImage
-        nonogram = NonogramImage.objects.create(
-            user=request.user,
-            origin=origin,
-            size=size,
-            image_data=final_data
-        )
+            nonogram = NonogramImage.objects.create(
+                user=request.user,
+                origin=origin,
+                size=size,
+                image_data=grid_str
+            )
 
-        serializer = self.get_serializer(nonogram)
-        return Response(serializer.data, status=status.HTTP_201_CREATED)
+            serializer = self.get_serializer(nonogram)
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+
+        except Exception as e:
+            return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 
 class OriginImageListView(generics.ListAPIView):  # (show maked nonogram image)
