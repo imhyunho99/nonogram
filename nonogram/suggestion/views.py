@@ -12,6 +12,14 @@ class SuggestionCreateView(generics.CreateAPIView):
     def perform_create(self, serializer):
         serializer.save(user=self.request.user)
 
+class SuggestionListView(generics.ListAPIView):
+
+    serializer_class = SuggestionSerializer
+    permission_classes = [IsOwnerOrAdmin]
+
+    def get_queryset(self):
+        return Suggestion.objects.filter(user_id = self.request.user)
+
 
 class SuggestionDeleteView(generics.DestroyAPIView):
     queryset = Suggestion.objects.all()
