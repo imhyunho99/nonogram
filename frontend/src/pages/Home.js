@@ -1,34 +1,27 @@
-// src/pages/Home.js
 import React, { useState } from 'react';
-import axios from 'axios';
+import { uploadOriginImage } from '../api/nonogram';  // 🔥 generateNonogram 제거
 import './Home.css';
 
 function Home() {
-function Home() {
   const [file, setFile] = useState(null);
-  const [gridSize, setGridSize] = useState(10);
-  const [resultImageUrl, setResultImageUrl] = useState(null);
+  const [originInfo, setOriginInfo] = useState(null);
   const [loading, setLoading] = useState(false);
 
-  const handleSubmit = async () => {
+  const handleUpload = async () => {
     if (!file) {
-      alert("이미지를 선택해주세요!");
+      alert("이미지를 업로드해주세요.");
       return;
     }
 
     setLoading(true);
-    const formData = new FormData();
-    formData.append("image", file);
-    formData.append("grid_size", gridSize.toString());
 
     try {
-      const res = await axios.post('/api/nonogram/', formData, {
-        responseType: 'blob',
-      });
-      const imageUrl = URL.createObjectURL(res.data);
-      setResultImageUrl(imageUrl);
-    } catch (err) {
-      alert("변환 중 오류가 발생했습니다.");
+      // ✅ 1단계: 이미지 업로드만 수행
+      const origin = await uploadOriginImage(file);
+      setOriginInfo(origin);  // origin에는 id, uploaded_at 등 정보 있음
+    } catch (error) {
+      console.error("에러 발생:", error);
+      alert("업로드 중 오류 발생");
     } finally {
       setLoading(false);
     }
@@ -36,35 +29,25 @@ function Home() {
 
   return (
     <div className="container">
-      <div className="form-box">
-        <h1>🧩 Nonogram 생성기</h1>
+      <h1>🧩 네모로직 이미지 업로드</h1>
 
-        <input
-          type="file"
-          accept="image/*"
-          onChange={e => setFile(e.target.files?.[0] || null)}
-        />
+      <input
+        type="file"
+        accept="image/*"
+        onChange={e => setFile(e.target.files?.[0] || null)}
+      />
 
-        <input
-          type="number"
-          min={5}
-          max={50}
-          value={gridSize}
-          onChange={e => setGridSize(Number(e.target.value))}
-          placeholder="Grid Size (예: 10)"
-        />
+      <button onClick={handleUpload} disabled={loading}>
+        {loading ? "업로드 중..." : "이미지 업로드"}
+      </button>
 
-        <button onClick={handleSubmit} disabled={loading}>
-          {loading ? "변환 중..." : "이미지 변환"}
-        </button>
-
-        {resultImageUrl && (
-          <div className="result">
-            <h2>결과 이미지</h2>
-            <img src={resultImageUrl} alt="Nonogram Result" />
-          </div>
-        )}
-      </div>
+      {originInfo && (
+        <div className="result">
+          <h2>✅ 업로드 완료</h2>
+          <p>이미지 ID: {originInfo.id}</p>
+          <p>업로드 시간: {originInfo.uploaded_at}</p>
+        </div>
+      )}
     </div>
   );
 }
