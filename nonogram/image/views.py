@@ -10,12 +10,10 @@ from .serializers import OriginImageSerializer, NonogramImageSerializer
 from .src.NonogramUtils import NonogramUtils
 
 
-#Permissoin class allowany temporary approval
 class OriginImageCreateView(generics.ListCreateAPIView):  #collect image data from user and change it GrayScale : Upload only
     queryset = OriginImage.objects.all()
     serializer_class = OriginImageSerializer
-    #permission_classes = [permissions.IsAuthenticated]
-    permission_classes = [permissions.AllowAny]
+    permission_classes = [permissions.IsAuthenticated]
 
     def perform_create(self, serializer):
         serializer.save(user=self.request.user)
@@ -26,8 +24,8 @@ class OriginImageCreateView(generics.ListCreateAPIView):  #collect image data fr
 
 class NonogramImageCreateView(generics.CreateAPIView):
     serializer_class = NonogramImageSerializer
-    #permission_classes = [permissions.IsAuthenticated]
-    permission_classes = [permissions.AllowAny]
+    permission_classes = [permissions.IsAuthenticated]
+
 
     def post(self, request, *args, **kwargs):
         origin_id = request.data.get('origin_id')
@@ -72,8 +70,8 @@ class NonogramImageCreateView(generics.CreateAPIView):
 
 class OriginImageListView(generics.ListAPIView):  # (show maked nonogram image)
     serializer_class = OriginImageSerializer
-    #permission_classes = [permissions.IsAuthenticated]
-    permission_classes = [permissions.AllowAny]
+    permission_classes = [permissions.IsAuthenticated]
+
 
     def get_queryset(self):
         return OriginImage.objects.filter(user_id=self.request.user)
@@ -81,8 +79,8 @@ class OriginImageListView(generics.ListAPIView):  # (show maked nonogram image)
 
 class NonogramImageListView(generics.ListAPIView):  # (show maked nonogram image)
     serializer_class = NonogramImageSerializer
-    #permission_classes = [permissions.IsAuthenticated]
-    permission_classes = [permissions.AllowAny]
+    permission_classes = [permissions.IsAuthenticated]
+
 
     def get_queryset(self):
         return NonogramImage.objects.filter(user_id=self.request.user)

@@ -1,53 +1,55 @@
-import React, { useState } from 'react';
-import { uploadOriginImage } from '../api/nonogram';  // 🔥 generateNonogram 제거
+// src/pages/Home.js
 import './Home.css';
+
+import React, { useState } from 'react';
+import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
 function Home() {
   const [file, setFile] = useState(null);
-  const [originInfo, setOriginInfo] = useState(null);
-  const [loading, setLoading] = useState(false);
+  const [originId, setOriginId] = useState(null);
+  const [uploadMessage, setUploadMessage] = useState('');
+  const navigate = useNavigate();
+
+  const handleFileChange = (e) => {
+    setFile(e.target.files[0]);
+  };
 
   const handleUpload = async () => {
     if (!file) {
-      alert("이미지를 업로드해주세요.");
+      setUploadMessage('파일을 선택해주세요.');
       return;
     }
 
-    setLoading(true);
-
+    const formData = new FormData();
+    formData.append('image_data', file);  // <-- 중요: 백엔드 필드명과 맞춰야 함
     try {
-      // ✅ 1단계: 이미지 업로드만 수행
-      const origin = await uploadOriginImage(file);
-      setOriginInfo(origin);  // origin에는 id, uploaded_at 등 정보 있음
+      const token = localStorage.getItem('access');
+      const res = await axios.post('http://localhost:8000/image/origin/', formData, {
+        headers: {
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'application/json',
+        },
+      });
+
+      setOriginId(res.data.id); // 서버가 반환하는 origin image id
+      setUploadMessage('이미지 업로드 성공!');
     } catch (error) {
-      console.error("에러 발생:", error);
-      alert("업로드 중 오류 발생");
-    } finally {
-      setLoading(false);
+      console.error(error);
+      setUploadMessage('업로드 실패. 로그인 상태를 확인해주세요.');
+      if (error.response?.status === 401) {
+        navigate('/login');
+      }
     }
   };
 
   return (
-    <div className="container">
-      <h1>🧩 네모로직 이미지 업로드</h1>
-
-      <input
-        type="file"
-        accept="image/*"
-        onChange={e => setFile(e.target.files?.[0] || null)}
-      />
-
-      <button onClick={handleUpload} disabled={loading}>
-        {loading ? "업로드 중..." : "이미지 업로드"}
-      </button>
-
-      {originInfo && (
-        <div className="result">
-          <h2>✅ 업로드 완료</h2>
-          <p>이미지 ID: {originInfo.id}</p>
-          <p>업로드 시간: {originInfo.uploaded_at}</p>
-        </div>
-      )}
+    <div>
+      <h2>이미지 업로드</h2>
+      <input type="file" onChange={handleFileChange} />
+      <button onClick={handleUpload}>업로드</button>
+      <p>{uploadMessage}</p>
+      {originId && <p>Origin ID: {originId}</p>}
     </div>
   );
 }

@@ -4,7 +4,6 @@ export async function uploadOriginImage(file) {
   const formData = new FormData();
   formData.append('image', file);
   const res = await axios.post('/image/origin', formData);
-  console.log(res)
   return res.data;
 }
 
@@ -13,6 +12,5 @@ export async function generateNonogram(origin_id, size) {
     origin_id,
     size,
   });
-  console.log(res)
   return res.data;
 }
