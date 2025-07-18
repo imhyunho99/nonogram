@@ -1,1 +1,36 @@
-**/db.sqlite3
+# Python
+__pycache__/
+*.py[cod]
+*.so
+*.egg
+*.egg-info/
+dist/
+build/
+.eggs/
+*.pyo
+*.pyd
+
+# Virtual environments
+env/
+venv/
+ENV/
+*.env
+*.venv
+carlogo/  # ← 너가 conda 가상환경을 여기에 만들었다면 이 디렉토리도 무시
+
+# Django stuff:
+*.log
+*.pot
+*.pyc
+db.sqlite3
+media/
+staticfiles/
+local_settings.py
+
+# VSCode or IDE
+.vscode/
+.idea/
+
+# OS
+.DS_Store
+Thumbs.db

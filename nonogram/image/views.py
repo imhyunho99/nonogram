@@ -9,18 +9,15 @@ from .models import OriginImage, NonogramImage
 from .serializers import OriginImageSerializer, NonogramImageSerializer
 from .src.NonogramUtils import NonogramUtils
 
-
 class OriginImageCreateView(generics.ListCreateAPIView):  #collect image data from user and change it GrayScale : Upload only
-    queryset = OriginImage.objects.all()
-    serializer_class = OriginImageSerializer
     permission_classes = [permissions.IsAuthenticated]
 
-    def perform_create(self, serializer):
-        serializer.save(user=self.request.user)
-
-    def get_queryset(self):
-        return self.queryset.filter(user=self.request.user)
-
+    def post(self, request, *args, **kwargs):
+        serializer = OriginImageSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save(user=request.user)
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 class NonogramImageCreateView(generics.CreateAPIView):
     serializer_class = NonogramImageSerializer
