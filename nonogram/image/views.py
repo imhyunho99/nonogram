@@ -4,6 +4,8 @@ from rest_framework.response import Response
 from PIL import Image
 import base64
 from io import BytesIO
+from rest_framework.parsers import MultiPartParser, FormParser
+
 
 from .models import OriginImage, NonogramImage
 from .serializers import OriginImageSerializer, NonogramImageSerializer
@@ -11,6 +13,7 @@ from .src.NonogramUtils import NonogramUtils
 
 class OriginImageCreateView(generics.ListCreateAPIView):  #collect image data from user and change it GrayScale : Upload only
     permission_classes = [permissions.IsAuthenticated]
+    parser_classes = (MultiPartParser, FormParser)
 
     def post(self, request, *args, **kwargs):
         serializer = OriginImageSerializer(data=request.data)
