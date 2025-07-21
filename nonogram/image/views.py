@@ -74,7 +74,7 @@ class OriginImageListView(generics.ListAPIView):  # (show maked nonogram image)
 
 
     def get_queryset(self):
-        return OriginImage.objects.filter(user_id=self.request.user)
+        return OriginImage.objects.filter(user_id=self.request.user).order_by('uploaded_at')
 
 
 class NonogramImageListView(generics.ListAPIView):  # (show maked nonogram image)

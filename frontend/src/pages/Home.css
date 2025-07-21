@@ -4,23 +4,13 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
-  min-height: 100vh;
   padding: 2rem;
+  min-height: 100vh;
   background-color: #f9f9f9;
   box-sizing: border-box;
 }
 
-h1 {
-  margin-bottom: 1rem;
-  font-size: 1.8rem;
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-}
-
 input[type="file"],
-input[type="number"],
 button {
   margin: 0.5rem 0;
   padding: 0.5rem 1rem;
@@ -29,12 +19,25 @@ button {
   max-width: 300px;
 }
 
-.result {
-  margin-top: 2rem;
-  background: #fff;
-  padding: 1rem;
+.image-list {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.thumbnail {
+  width: 150px;
+  height: 150px;
+  object-fit: cover;
+  border: 2px solid #ccc;
   border-radius: 0.5rem;
-  border: 1px solid #ccc;
-  max-width: 90%;
-  word-wrap: break-word;
+  cursor: pointer;
+  transition: transform 0.2s;
+}
+
+.thumbnail:hover {
+  transform: scale(1.05);
+  border-color: #666;
 }
