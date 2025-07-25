@@ -1,35 +1,57 @@
-import React from 'react';
-import { useParams, useLocation } from 'react-router-dom';
+// src/pages/Game.js
+import React, { useEffect, useState } from 'react';
+import { useSearchParams, useParams } from 'react-router-dom';
+import axios from '../api/axiosConfig';
+import './Game.css';
 
-function Game() {
-  const { originId } = useParams(); // /game/:originId
-  const location = useLocation();
+const Game = () => {
+  const { id } = useParams();  // origin image id
+  const [searchParams] = useSearchParams();  // get ?grid=30
+  const [gridData, setGridData] = useState([]);
+  const [size, setSize] = useState(searchParams.get("grid"));
 
-  const queryParams = new URLSearchParams(location.search);
-  const gridSize = parseInt(queryParams.get('grid'), 10); // ?grid=30
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await axios.post('http://localhost:8000/image/create/', {
+
+          origin_id: id,
+          size: size,
+        });
+
+        const parsedGrid = JSON.parse(response.data.image_data);
+        setGridData(parsedGrid);
+      } catch (error) {
+        console.error("Error fetching puzzle data:", error);
+      }
+    };
+
+    if (id && size) {
+      fetchData();
+    }
+  }, [id, size]);
 
   return (
-    <div>
-      <h2>게임 시작!</h2>
-      <p>이미지 ID: {originId}</p>
-      <p>그리드 크기: {gridSize} x {gridSize}</p>
-
-      {/* 그리드 UI 생성 */}
-      <div style={{ display: 'grid', gridTemplateColumns: `repeat(${gridSize}, 20px)` }}>
-        {Array.from({ length: gridSize * gridSize }).map((_, i) => (
-          <div
-            key={i}
-            style={{
-              width: '20px',
-              height: '20px',
-              border: '1px solid #aaa',
-              boxSizing: 'border-box',
-            }}
-          />
-        ))}
-      </div>
+    <div className="game-container">
+      {gridData.length > 0 ? (
+        <div className="grid">
+          {gridData.map((row, rowIndex) => (
+            <div className="grid-row" key={rowIndex}>
+              {row.map((cell, colIndex) => (
+                <div
+                  className={`grid-cell ${cell ? "filled" : ""}`}
+                  key={colIndex}
+                />
+              ))}
+            </div>
+          ))}
+        </div>
+      ) : (
+        <p>Loading puzzle...</p>
+      )}
     </div>
   );
-}
+};
 
 export default Game;

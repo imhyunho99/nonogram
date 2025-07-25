@@ -9,3 +9,6 @@ axios.interceptors.request.use((config) => {
   }
   return config;
 });
+
+// ✅ default export 추가
+export default axios;

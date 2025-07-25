@@ -1,0 +1,26 @@
+/* src/pages/Game.css */
+.game-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 40px;
+}
+
+.grid {
+  display: flex;
+  flex-direction: column;
+}
+
+.grid-row {
+  display: flex;
+}
+
+.grid-cell {
+  width: 20px;
+  height: 20px;
+  border: 1px solid #ccc;
+}
+
+.grid-cell.filled {
+  background-color: black;
+}
