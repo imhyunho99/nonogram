@@ -63,9 +63,10 @@ function Home() {
   };
 
   const handleImageClick = (originImage) => {
-    const size = prompt('Nonogram의 grid size를 입력해주세요 (예: 10)');
+    const size = prompt('Nonogram의 grid size를 입력해주세요 (10~40)');
     const grid = parseInt(size, 10);
     if (!isNaN(grid) && grid > 0) {
+      console.log(`Navigating to /game/${originImage.id}?grid=${grid}`);  // <-- 디버깅
       navigate(`/game/${originImage.id}?grid=${grid}`);
     } else {
       alert('올바른 숫자를 입력해주세요.');

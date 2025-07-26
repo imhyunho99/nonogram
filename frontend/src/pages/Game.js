@@ -1,132 +1,124 @@
 // src/pages/Game.js
 import React, { useEffect, useState } from 'react';
-import { useSearchParams, useParams } from 'react-router-dom';
+import { useSearchParams, useParams, useNavigate } from 'react-router-dom';
 import axios from '../api/axiosConfig';
 import './Game.css';
 
 const Game = () => {
   const { id } = useParams();
   const [searchParams] = useSearchParams();
+  const size = parseInt(searchParams.get('grid'));
+  const navigate = useNavigate();
+
   const [gridData, setGridData] = useState([]);
   const [userGrid, setUserGrid] = useState([]);
   const [rowHints, setRowHints] = useState([]);
   const [colHints, setColHints] = useState([]);
-  const [size, setSize] = useState(searchParams.get("grid"));
 
   useEffect(() => {
-    const fetchData = async () => {
+    const fetchPuzzle = async () => {
       try {
         const response = await axios.post('http://localhost:8000/image/create/', {
           origin_id: id,
           size: size,
         });
-
         const parsedGrid = JSON.parse(response.data.image_data);
         setGridData(parsedGrid);
-        setUserGrid(Array(parsedGrid.length).fill().map(() => Array(parsedGrid[0].length).fill(false)));
-        setRowHints(generateRowHints(parsedGrid));
-        setColHints(generateColHints(parsedGrid));
-      } catch (error) {
-        console.error("Error fetching puzzle data:", error);
+        setUserGrid(Array(size).fill().map(() => Array(size).fill(0)));
+        computeHints(parsedGrid);
+      } catch (err) {
+        console.error("Error fetching puzzle:", err);
       }
     };
 
-    if (id && size) {
-      fetchData();
-    }
+    if (id && size) fetchPuzzle();
   }, [id, size]);
 
-  const toggleCell = (rowIdx, colIdx) => {
-    const updatedGrid = userGrid.map((row, rIdx) =>
-      row.map((cell, cIdx) =>
-        rIdx === rowIdx && cIdx === colIdx ? !cell : cell
-      )
-    );
-    setUserGrid(updatedGrid);
-  };
+  const computeHints = (grid) => {
+    const getHints = (line) =>
+      line.join('').split('0').filter(Boolean).map(group => group.length) || [0];
 
-  const generateRowHints = (grid) => {
-    return grid.map(row => {
-      const hints = [];
-      let count = 0;
-      row.forEach(cell => {
-        if (cell) {
-          count += 1;
-        } else if (count > 0) {
-          hints.push(count);
-          count = 0;
-        }
-      });
-      if (count > 0) hints.push(count);
-      return hints.length ? hints : [0];
+    const rows = grid.map(getHints);
+    const cols = Array(size).fill().map((_, colIdx) => {
+      const col = grid.map(row => row[colIdx]);
+      return getHints(col);
     });
+
+    setRowHints(rows);
+    setColHints(cols);
   };
 
-  const generateColHints = (grid) => {
-    const colCount = grid[0].length;
-    const hints = [];
+  const toggleCell = (row, col) => {
+    const newGrid = userGrid.map(r => [...r]);
+    newGrid[row][col] = newGrid[row][col] ? 0 : 1;
+    setUserGrid(newGrid);
 
-    for (let col = 0; col < colCount; col++) {
-      let count = 0;
-      const colHint = [];
-
-      for (let row = 0; row < grid.length; row++) {
-        if (grid[row][col]) {
-          count += 1;
-        } else if (count > 0) {
-          colHint.push(count);
-          count = 0;
-        }
-      }
-      if (count > 0) colHint.push(count);
-      hints.push(colHint.length ? colHint : [0]);
+    if (JSON.stringify(newGrid) === JSON.stringify(gridData)) {
+      setTimeout(() => {
+        alert("🎉 퍼즐을 완성했습니다!");
+        navigate(`/image/origin/${id}`);
+      }, 200);
     }
-    return hints;
   };
+
+  const maxColHintHeight = Math.max(...colHints.map(c => c.length));
+  const maxRowHintWidth = Math.max(...rowHints.map(r => r.length));
 
   return (
     <div className="game-container">
       {gridData.length > 0 ? (
         <div className="nonogram-wrapper">
-          <div className="nonogram-grid">
-            {/* 열 힌트 */}
+          {/* 상단 힌트 */}
+          <div className="top-hints-row">
+            <div className="empty-corner" style={{ width: `${maxRowHintWidth * 20}px`, height: `${maxColHintHeight * 20}px` }} />
             <div className="top-hints">
-              <div className="empty-corner" />
-              {colHints.map((col, colIndex) => (
-                <div key={colIndex} className="col-hint">
-                  {col.map((num, idx) => (
-                    <div key={idx}>{num}</div>
+              {colHints.map((col, colIdx) => (
+                <div
+                  className="col-hint"
+                  key={colIdx}
+                  style={{ height: `${maxColHintHeight * 20}px` }}
+                >
+                  {Array(maxColHintHeight).fill().map((_, i) => (
+                    <div key={i} className="hint-number">
+                      {col[col.length - maxColHintHeight + i] || ''}
+                    </div>
+                  ))}
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* 좌측 힌트 + 게임 그리드 */}
+          <div className="main-area">
+            <div className="row-hints">
+              {rowHints.map((row, rowIdx) => (
+                <div
+                  className="row-hint"
+                  key={rowIdx}
+                  style={{ width: `${maxRowHintWidth * 20}px` }}
+                >
+                  {Array(maxRowHintWidth - row.length).fill().map((_, i) => (
+                    <div key={`empty-${i}`} className="hint-number" />
+                  ))}
+                  {row.map((n, i) => (
+                    <div key={i} className="hint-number">{n}</div>
                   ))}
                 </div>
               ))}
             </div>
 
-            <div className="main-area">
-              {/* 행 힌트 */}
-              <div className="row-hints">
-                {rowHints.map((row, rowIndex) => (
-                  <div key={rowIndex} className="row-hint">
-                    {row.map((num, idx) => (
-                      <div key={idx}>{num}</div>
-                    ))}
-                  </div>
-                ))}
-              </div>
-
-              {/* 퍼즐 그리드 */}
-              <div className="grid">
-                {userGrid.map((row, rowIndex) => (
-                  <div className="grid-row" key={rowIndex}>
-                    {row.map((cell, colIndex) => (
-                      <div
-                        className={`grid-cell ${cell ? "clicked" : ""}`}
-                        key={colIndex}
-                        onClick={() => toggleCell(rowIndex, colIndex)}
-                      />
-                    ))}
-                  </div>
-                ))}
-              </div>
+            <div className="grid">
+              {userGrid.map((row, rowIdx) => (
+                <div className="grid-row" key={rowIdx}>
+                  {row.map((cell, colIdx) => (
+                    <div
+                      className={`grid-cell ${cell ? 'clicked' : ''}`}
+                      key={colIdx}
+                      onClick={() => toggleCell(rowIdx, colIdx)}
+                    />
+                  ))}
+                </div>
+              ))}
             </div>
           </div>
         </div>
