@@ -1,6 +1,6 @@
 // src/pages/Game.js
 import React, { useEffect, useState } from 'react';
-import { useSearchParams, useParams, useNavigate } from 'react-router-dom';
+import { useSearchParams, useParams } from 'react-router-dom';
 import axios from '../api/axiosConfig';
 import './Game.css';
 
@@ -8,12 +8,14 @@ const Game = () => {
   const { id } = useParams();
   const [searchParams] = useSearchParams();
   const size = parseInt(searchParams.get('grid'));
-  const navigate = useNavigate();
 
   const [gridData, setGridData] = useState([]);
   const [userGrid, setUserGrid] = useState([]);
   const [rowHints, setRowHints] = useState([]);
   const [colHints, setColHints] = useState([]);
+  const [originImageUrl, setOriginImageUrl] = useState(null);
+  const [isSolved, setIsSolved] = useState(false);
+
 
   useEffect(() => {
     const fetchPuzzle = async () => {
@@ -47,19 +49,26 @@ const Game = () => {
     setRowHints(rows);
     setColHints(cols);
   };
-
   const toggleCell = (row, col) => {
     const newGrid = userGrid.map(r => [...r]);
     newGrid[row][col] = newGrid[row][col] ? 0 : 1;
     setUserGrid(newGrid);
-
     if (JSON.stringify(newGrid) === JSON.stringify(gridData)) {
       setTimeout(() => {
         alert("🎉 퍼즐을 완성했습니다!");
-        navigate(`/image/origin/${id}`);
+        const fetchAndSetImage = async () => {
+          try {
+            const res = await axios.get('http://localhost:8000/image/origin/${id}/');
+            setOriginImageUrl(res.data.image); // 이미지 URL state 업데이트
+          } catch (err) {
+            console.error('이미지 로딩 실패:', err);
+          }
+        };
+        fetchAndSetImage(); // 비동기 함수 실행
       }, 200);
     }
   };
+
 
   const maxColHintHeight = Math.max(...colHints.map(c => c.length));
   const maxRowHintWidth = Math.max(...rowHints.map(r => r.length));

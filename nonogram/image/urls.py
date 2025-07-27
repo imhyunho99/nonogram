@@ -5,6 +5,7 @@ urlpatterns = [
     path('origin/', OriginImageCreateView.as_view()),
     path('create/', NonogramImageCreateView.as_view()),
     path('list/', OriginImageListView.as_view()),
+    path('origin/<int:pk>/', OriginImageDetailView.as_view()),
     #path('nonogram_list/', NonogramImageListView.as_view()),
 
 ]

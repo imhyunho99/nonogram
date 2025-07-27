@@ -1,11 +1,12 @@
 from multiprocessing.managers import MakeProxyType
-from rest_framework import generics, permissions, status
-from rest_framework.response import Response
 from PIL import Image
 import base64
 from io import BytesIO
-from rest_framework.parsers import MultiPartParser, FormParser
 
+from rest_framework import generics, permissions, status
+from rest_framework.response import Response
+from rest_framework.parsers import MultiPartParser, FormParser
+from rest_framework.generics import RetrieveAPIView
 
 from .models import OriginImage, NonogramImage
 from .serializers import OriginImageSerializer, NonogramImageSerializer
@@ -43,29 +44,29 @@ class NonogramImageCreateView(generics.CreateAPIView):
         except OriginImage.DoesNotExist:
             return Response({"error": f"OriginImage with id={origin_id} not found"}, status=status.HTTP_404_NOT_FOUND)
 
-        #try:
-        image = Image.open(origin.image.path).convert("RGB")
+        try:
+            image = Image.open(origin.image.path).convert("RGB")
 
-        edge_image = NonogramUtils.edge_detect(image)
-        gray_image = NonogramUtils.to_grayscale(edge_image)
-        grid = NonogramUtils.to_grid(gray_image, size)
+            edge_image = NonogramUtils.edge_detect(image)
+            gray_image = NonogramUtils.to_grayscale(edge_image)
+            grid = NonogramUtils.to_grid(gray_image, size)
 
-        import json
-        grid_str = json.dumps(grid)
+            import json
+            grid_str = json.dumps(grid)
 
-        nonogram = NonogramImage.objects.create(
-            user=request.user,
-            origin=origin,
-            size=size,
-            image_data=grid_str
-        )
+            nonogram = NonogramImage.objects.create(
+                user=request.user,
+                origin=origin,
+                size=size,
+                image_data=grid_str
+            )
 
-        serializer = self.get_serializer(nonogram)
-        return Response(serializer.data, status=status.HTTP_201_CREATED)
+            serializer = self.get_serializer(nonogram)
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
 
-        """except Exception as e:
+        except Exception as e:
             print("Nonogram Encoding Error")
-            return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)"""
+            return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 
 class OriginImageListView(generics.ListAPIView):  # (show maked nonogram image)
@@ -75,6 +76,11 @@ class OriginImageListView(generics.ListAPIView):  # (show maked nonogram image)
 
     def get_queryset(self):
         return OriginImage.objects.filter(user_id=self.request.user).order_by('uploaded_at')
+
+
+class OriginImageDetailView(RetrieveAPIView):
+    queryset = OriginImage.objects.all()
+    serializer_class = OriginImageSerializer
 
 
 """class NonogramImageListView(generics.ListAPIView):  # (show maked nonogram image)
