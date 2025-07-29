@@ -1,5 +1,4 @@
 /* src/pages/Game.css */
-
 .game-container {
   display: flex;
   justify-content: center;
@@ -107,9 +106,70 @@
   text-align: center;
 }
 
-.origin-image {
+.origin-image-container {
+  text-align: center;
   margin-top: 20px;
-  max-width: 90%;
-  border: 2px solid #555;
+  opacity: 0;
+  transition: opacity 1s ease-in;
+}
+
+.origin-image-container.visible {
+  opacity: 1;
+}
+
+.origin-image {
+  max-width: 300px;
+  border: 2px solid #ccc;
+  border-radius: 4px;
+}
+
+.game-wrapper {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 600px;
+}
+
+.nonogram-wrapper.hidden {
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.8s ease;
+}
+
+.solution-image {
+  position: absolute;
+  max-width: 80%;
+  max-height: 80%;
+  opacity: 0;
+  transition: opacity 1.5s ease-in-out;
+  z-index: 10;
+}
+
+.solution-image.fade-in {
+  opacity: 1;
+}
+
+.back-button-container {
+  position: fixed;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 10;
+}
+
+.back-button {
+  padding: 10px 20px;
+  background-color: #4caf50;
+  color: white;
+  font-weight: bold;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.back-button:hover {
+  background-color: #45a049;
 }
 
