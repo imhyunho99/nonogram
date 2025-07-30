@@ -1,36 +1,46 @@
-# Python
+# Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
+*$py.class
+
+# C extensions
 *.so
-*.egg
-*.egg-info/
-dist/
-build/
-.eggs/
-*.pyo
-*.pyd
 
 # Virtual environments
-env/
 venv/
+env/
 ENV/
-*.env
-*.venv
-carlogo/  # ← 너가 conda 가상환경을 여기에 만들었다면 이 디렉토리도 무시
+.Python
+bin/
+lib/
+lib64/
+share/
+pyvenv.cfg
 
 # Django stuff:
 *.log
 *.pot
 *.pyc
-db.sqlite3
+*.pyo
+*.sqlite3
 media/
+static/
 staticfiles/
-local_settings.py
 
-# VSCode or IDE
+# VSCode/JetBrains
 .vscode/
 .idea/
 
-# OS
+# React frontend
+frontend/node_modules/
+frontend/build/
+
+# Env / secret files
+.env
+.env.*
+secrets.json
+credentials.json
+
+# Mac system files
 .DS_Store
-Thumbs.db
+
