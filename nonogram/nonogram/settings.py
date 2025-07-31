@@ -28,7 +28,7 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'nonogram', 'media')
 SECRET_KEY = 'django-insecure-z^xdhi5n#!(i!8p(kiuo*6dr$*bku&^hk!zp!r&sn4nm^4^_c9'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = ["localhost", "140.245.71.233", "nonogram.duckdns.org"]
 STATIC_ROOT = os.path.join(BASE_DIR, 'static/')  # 추가
