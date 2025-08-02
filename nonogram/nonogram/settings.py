@@ -31,11 +31,12 @@ SECRET_KEY = 'django-insecure-z^xdhi5n#!(i!8p(kiuo*6dr$*bku&^hk!zp!r&sn4nm^4^_c9
 DEBUG = False
 
 ALLOWED_HOSTS = ["localhost", "140.245.71.233", "nonogram.duckdns.org"]
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 STATIC_URL = '/static/'
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'frontend', 'build', 'static'),
+
 ]
-STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
 # Application definition
 
