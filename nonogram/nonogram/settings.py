@@ -28,15 +28,15 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'nonogram', 'media')
 SECRET_KEY = 'django-insecure-z^xdhi5n#!(i!8p(kiuo*6dr$*bku&^hk!zp!r&sn4nm^4^_c9'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
-ALLOWED_HOSTS = ["localhost", "140.245.71.233", "nonogram.duckdns.org"]
-STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+ALLOWED_HOSTS = ["localhost", "140.245.71.233", "nonogram.duckdns.org","127.0.0.1"]
 STATIC_URL = '/static/'
 STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, 'frontend', 'build', 'static'),
-
+    os.path.join(BASE_DIR, '..', 'frontend', 'build', 'static')
 ]
+
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')  # collectstatic 결과 저장 위치
 
 # Application definition
 
@@ -52,8 +52,6 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'rest_framework_simplejwt',
-
-
 ]
 
 MIDDLEWARE = [
@@ -72,7 +70,7 @@ ROOT_URLCONF = 'nonogram.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': ['/home/ubuntu/nonogram/frontend/build'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -83,7 +81,6 @@ TEMPLATES = [
         },
     },
 ]
-
 WSGI_APPLICATION = 'nonogram.wsgi.application'
 
 
