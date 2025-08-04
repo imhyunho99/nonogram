@@ -25,7 +25,7 @@ function Register() {
     }
 
     try {
-      await axios.post('http://localhost:8000/user/register/', {
+      await axios.post('https://nonogram.duckdns.org/user/register/', {
         email: formData.email,
         username: formData.username,
         password: formData.password,
