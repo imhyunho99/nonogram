@@ -20,7 +20,7 @@ function Home() {
 
   const fetchImageList = async () => {
     try {
-      const res = await axios.get('http://localhost:8000/image/list/', {
+      const res = await axios.get('https://nonogram.duckdns.org/image/list/', {
         headers: { Authorization: `Bearer ${token}` },
       });
       setImageList(res.data);
@@ -43,7 +43,7 @@ function Home() {
     formData.append('image', file);
 
     try {
-      const res = await axios.post('http://localhost:8000/image/origin/', formData, {
+      const res = await axios.post('https://nonogram.duckdns.org/image/origin/', formData, {
         headers: {
           Authorization: `Bearer ${token}`,
         },

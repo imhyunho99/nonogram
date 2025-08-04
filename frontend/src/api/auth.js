@@ -2,7 +2,7 @@
 
 import axios from 'axios';
 
-const BASE_URL = 'http://localhost:8000'; // Django 서버 주소 (배포 시 수정)
+const BASE_URL = 'https://nonogram.duckdns.org'; // Django 서버 주소 (배포 시 수정)
 
 export const login = async (email, password) => {
   const response = await axios.post(`${BASE_URL}/user/login/`, {
