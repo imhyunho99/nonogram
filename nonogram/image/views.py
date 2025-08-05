@@ -65,8 +65,13 @@ class NonogramImageCreateView(generics.CreateAPIView):
             return Response(serializer.data, status=status.HTTP_201_CREATED)
 
         except Exception as e:
-            print("Nonogram Encoding Error")
-            return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+        import traceback
+        traceback.print_exc()
+        print("Authentic User:", request.user)
+        print(type(image))
+        print("Nonogram Encoding Error:", str(e))
+        return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
 
 
 class OriginImageListView(generics.ListAPIView):  # (show maked nonogram image)
