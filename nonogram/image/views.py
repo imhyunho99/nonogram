@@ -46,30 +46,34 @@ class NonogramImageCreateView(generics.CreateAPIView):
 
         try:
             image = Image.open(origin.image.path).convert("RGB")
-
+            print("image open success")
             edge_image = NonogramUtils.edge_detect(image)
+            print("image : nonogramUtils.edge_detection")
             gray_image = NonogramUtils.to_grayscale(edge_image)
+            print("image: NonogramUtils.to_grayscale")
             grid = NonogramUtils.to_grid(gray_image, size)
+            print("image: to_grid")
 
             import json
             grid_str = json.dumps(grid)
-
+            print("grid - json.dump")
             nonogram = NonogramImage.objects.create(
                 user=request.user,
                 origin=origin,
                 size=size,
                 image_data=grid_str
             )
-
+            print("nonogram image create")
             serializer = self.get_serializer(nonogram)
+            print("serializeing")
             return Response(serializer.data, status=status.HTTP_201_CREATED)
 
         except Exception as e:
-        import traceback
-        traceback.print_exc()
-        print("Authentic User:", request.user)
-        print(type(image))
-        print("Nonogram Encoding Error:", str(e))
+            import traceback
+            traceback.print_exc()
+            print("Authentic User:", request.user)
+            print(type(image))
+            print("Nonogram Encoding Error:", str(e))
         return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 
