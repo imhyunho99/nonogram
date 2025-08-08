@@ -2,6 +2,8 @@ from multiprocessing.managers import MakeProxyType
 from PIL import Image
 import base64
 from io import BytesIO
+import traceback
+import json
 
 from rest_framework import generics, permissions, status
 from rest_framework.response import Response
@@ -54,7 +56,6 @@ class NonogramImageCreateView(generics.CreateAPIView):
             grid = NonogramUtils.to_grid(gray_image, size)
             print("image: to_grid")
 
-            import json
             grid_str = json.dumps(grid)
             print("grid - json.dump")
             nonogram = NonogramImage.objects.create(
@@ -69,14 +70,11 @@ class NonogramImageCreateView(generics.CreateAPIView):
             return Response(serializer.data, status=status.HTTP_201_CREATED)
 
         except Exception as e:
-            import traceback
             traceback.print_exc()
             print("Authentic User:", request.user)
             print(type(image))
             print("Nonogram Encoding Error:", str(e))
         return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
-
-
 
 class OriginImageListView(generics.ListAPIView):  # (show maked nonogram image)
     serializer_class = OriginImageSerializer
