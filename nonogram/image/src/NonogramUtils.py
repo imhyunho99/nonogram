@@ -37,12 +37,39 @@ class NonogramUtils:
         for i in range(0, len(ascii_str), new_width):
             print(ascii_str[i:i + new_width])
 
+    """
     @staticmethod
     def edge_detect(pil_image: Image.Image) -> Image.Image:
         cv_image = cv2.cvtColor(np.array(pil_image), cv2.COLOR_RGB2BGR)
         gray = cv2.cvtColor(cv_image, cv2.COLOR_BGR2GRAY)
-        edges = cv2.Canny(gray, threshold1=50, threshold2=150)
+        edges = cv2.Canny(gray, threshold1=10,threshold2=60)
         print("\n--- 1. Edge Detect 결과 ---")
+        NonogramUtils.print_image_as_ascii(Image.fromarray(edges))
+        return Image.fromarray(edges)
+    """
+
+
+    @staticmethod
+    def edge_detect(pil_image: Image.Image) -> Image.Image:
+        print("\n\n--- [1. 입력 이미지] ---")
+        print(f"Mode: {pil_image.mode}, Size: {pil_image.size}")
+        NonogramUtils.print_image_as_ascii(pil_image)
+
+        cv_image = cv2.cvtColor(np.array(pil_image), cv2.COLOR_RGB2BGR)
+
+    
+        print("\n--- [2. OpenCV 변환 후] ---")
+        print(f"Shape: {cv_image.shape}, Dtype: {cv_image.dtype}")
+    
+
+        gray = cv2.cvtColor(cv_image, cv2.COLOR_BGR2GRAY)
+        print("\n--- [3. Canny 입력 직전 Grayscale] ---")
+        NonogramUtils.print_image_as_ascii(Image.fromarray(gray))
+    
+        edges = cv2.Canny(gray, threshold1=10, threshold2=60)
+
+    
+        print("\n--- [4. 최종 Edge Detect 결과] ---")
         NonogramUtils.print_image_as_ascii(Image.fromarray(edges))
         return Image.fromarray(edges)
 
