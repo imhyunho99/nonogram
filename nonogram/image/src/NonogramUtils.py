@@ -66,7 +66,7 @@ class NonogramUtils:
         print("\n--- [3. Canny 입력 직전 Grayscale] ---")
         NonogramUtils.print_image_as_ascii(Image.fromarray(gray))
     
-        edges = cv2.Canny(gray, threshold1=10, threshold2=60)
+        edges = cv2.Canny(gray, threshold1=1, threshold2=10)
 
     
         print("\n--- [4. 최종 Edge Detect 결과] ---")
