@@ -1,4 +1,5 @@
-import axios from 'axios';
+// src/api/nonogram.js
+import axios from './axiosConfig';
 
 export async function uploadOriginImage(file) {
   const formData = new FormData();
