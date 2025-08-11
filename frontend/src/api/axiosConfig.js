@@ -1,7 +1,7 @@
 // src/api/axiosConfig.js
 import axios from 'axios';
 
-axios.defaults.baseURL = '/';
+axios.defaults.baseURL = '/api/';
 axios.interceptors.request.use((config) => {
   const token = localStorage.getItem('accessToken');
   if (token) {
