@@ -19,7 +19,7 @@ const Game = () => {
   useEffect(() => {
     const fetchPuzzle = async () => {
       try {
-        const response = await axios.post(`https://nonogram.duckdns.org/image/create/`, {
+        const response = await axios.post(`/image/create/`, {
           origin_id: id,
           size: size,
         });
@@ -59,7 +59,7 @@ const Game = () => {
         alert("🎉 퍼즐을 완성했습니다!");
         const fetchAndSetImage = async () => {
           try {
-            const res = await axios.get(`https://nonogram.duckdns.org/image/origin/${id}/`);
+            const res = await axios.get(`/image/origin/${id}/`);
             setOriginImageUrl(res.data.image);
             setIsSolved(true);
           } catch (err) {

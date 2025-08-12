@@ -1,7 +1,7 @@
 // src/pages/Register.js
 
 import React, { useState } from 'react';
-import axios from 'axios';
+import axios from '../api/axiosConfig';
 import { useNavigate } from 'react-router-dom';
 
 function Register() {
@@ -25,7 +25,7 @@ function Register() {
     }
 
     try {
-      await axios.post('https://nonogram.duckdns.org/user/register/', {
+      await axios.post('/user/register/', {
         email: formData.email,
         username: formData.username,
         password: formData.password,
