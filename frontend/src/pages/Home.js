@@ -2,7 +2,7 @@
 import './Home.css';
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import axios from './api/axiosConfig';
+import axios from '../api/axiosConfig';
 
 function Home() {
   const [file, setFile] = useState(null);
