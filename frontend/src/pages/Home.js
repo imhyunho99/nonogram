@@ -1,8 +1,8 @@
 // src/pages/Home.js
 import './Home.css';
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import axios from './api/axiosConfig';
 
 function Home() {
   const [file, setFile] = useState(null);
@@ -20,7 +20,7 @@ function Home() {
 
   const fetchImageList = async () => {
     try {
-      const res = await axios.get('https://nonogram.duckdns.org/image/list/', {
+      const res = await axios.get('/image/list/', {
         headers: { Authorization: `Bearer ${token}` },
       });
       setImageList(res.data);
@@ -43,7 +43,7 @@ function Home() {
     formData.append('image', file);
 
     try {
-      const res = await axios.post('https://nonogram.duckdns.org/image/origin/', formData, {
+      const res = await axios.post('/image/origin/', formData, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
