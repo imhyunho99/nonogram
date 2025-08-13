@@ -21,4 +21,4 @@ jobs:
           key: ${{ secrets.EC2_SSH_PRIVATE_KEY }}
           script: |
             echo "🚀 배포 스크립트 실행"
-            sh /home/ubuntu/nonogram/nonogram/deploy.sh
+            sh /home/ubuntu/nonogram/deploy.sh
