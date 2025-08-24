@@ -17,7 +17,7 @@ from sentry_sdk.integrations.django import DjangoIntegration
 from decouple import config
 
 sentry_sdk.init(
-    dsn=config("SENTRY_DSN"), # 👈 os.environ.get 대신 config() 사용
+    dsn=config("SENTRY_DSN"),
     integrations=[
         DjangoIntegration(),
     ],
@@ -70,7 +70,7 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     'corsheaders.middleware.CorsMiddleware',
-    'middleware.performance.PerformanceLoggingMiddleware',
+    #'middleware.performance.PerformanceLoggingMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
