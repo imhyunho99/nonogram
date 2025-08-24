@@ -1,5 +1,10 @@
 # nonogram/urls.py
 
+from django.urls import path
+
+def trigger_error(request):
+    division_by_zero = 1 / 0
+
 from django.contrib import admin
 from django.urls import path, include
 from django.conf import settings
@@ -14,6 +19,7 @@ api_patterns = [
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/', include(api_patterns)),
+    path('sentry-debug/', trigger_error),
 ]
 
 if settings.DEBUG:
