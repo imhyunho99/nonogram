@@ -10,6 +10,21 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.2/ref/settings/
 """
 
+# nonogram/settings.py
+
+import sentry_sdk
+from sentry_sdk.integrations.django import DjangoIntegration
+from decouple import config
+
+sentry_sdk.init(
+    dsn=config("SENTRY_DSN"), # 👈 os.environ.get 대신 config() 사용
+    integrations=[
+        DjangoIntegration(),
+    ],
+    traces_sample_rate = 1.0,
+)
+
+
 from pathlib import Path
 import os
 
