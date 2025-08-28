@@ -1,18 +1,23 @@
 // src/api/axiosConfig.js
 import axios from 'axios';
-import { v4 as uuidv4 } from 'uuid'; // ✅ 1. uuid import 추가
+import { v4 as uuidv4 } from 'uuid';
 
 axios.defaults.baseURL = '/api/';
 
 axios.interceptors.request.use((config) => {
-  const token = localStorage.getItem('accessToken');
-  if (token) {
+  // 토큰이 필요 없는 공개 경로 목록
+  const publicPaths = ['/user/register/', '/user/login/'];
+
+  const token = localStorage.getItem('access');
+
+  // 토큰이 존재하고, 현재 요청 경로가 공개 경로가 아닐 때만 헤더에 토큰 추가
+  if (token && !publicPaths.includes(config.url)) {
     config.headers.Authorization = `Bearer ${token}`;
   }
 
   const requestId = uuidv4();
-  config.headers['X-Request-ID'] = requestId; // 헤더에 고유 ID 추가
-  config.metadata = { startTime: new Date() }; // 요청 시작 시간 기록
+  config.headers['X-Request-ID'] = requestId;
+  config.metadata = { startTime: new Date() };
   console.log(`[FE Log] Request Start: ${config.method.toUpperCase()} ${config.url} (ID: ${requestId})`);
 
   return config;

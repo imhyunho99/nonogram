@@ -9,19 +9,29 @@ function Login({ onLogin }) {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    
 
     try {
       const data = await login(email, password);
 
-      localStorage.setItem('accessToken', data.access);
-      localStorage.setItem('refreshToken', data.refresh);
+      localStorage.setItem('access', data.access);
+      localStorage.setItem('refresh', data.refresh);
 
       if (onLogin) onLogin(data.user);
 
       navigate('/home');
     } catch (error) {
-      console.error(error);
-      alert('유효하지 않은 회원정보입니다');
+      // --- 👇 여기를 수정했습니다 ---
+      console.error("로그인 실패! 전체 에러 객체:", error); // 전체 에러 확인용
+      if (error.response) {
+        // 서버가 응답을 보냈을 경우, 그 내용을 출력합니다.
+        console.error("🔥 서버 응답 데이터:", error.response.data);
+        alert('로그인 실패: ' + JSON.stringify(error.response.data));
+      } else {
+        // 네트워크 오류 등 서버 응답이 없는 경우
+        alert('유효하지 않은 회원정보이거나 네트워크에 문제가 있습니다.');
+      }
+      // --------------------------
     }
   };
 
@@ -96,3 +106,4 @@ const styles = {
 };
 
 export default Login;
+

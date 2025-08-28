@@ -17,8 +17,9 @@ python manage.py migrate
 echo "♻️ 무중단 리로드"
 touch  /home/ubuntu/nonogram/reload.txt
 
-echo "🔄 uWSGI 재시작 (systemd)"
+echo "🔄 uWSGI, Nginx 재시작 (systemd)"
 sudo systemctl restart uwsgi
+sudo systemctl restart nginx
 
 echo "✅ 배포 완료"
 
