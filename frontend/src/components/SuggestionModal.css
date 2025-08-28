@@ -36,21 +36,25 @@
   margin-top: 0;
   color: #2c3e50;
   text-align: center;
+  margin-bottom: 20px;
 }
 
-.modal-content textarea {
+.modal-input, .modal-textarea {
   width: 100%;
   padding: 10px;
   border-radius: 8px;
   border: 1px solid #ccc;
   font-size: 1rem;
-  margin-top: 15px;
   box-sizing: border-box;
+  margin-bottom: 15px;
+}
+
+.modal-textarea {
   resize: vertical;
 }
 
 .modal-actions {
-  margin-top: 20px;
+  margin-top: 10px;
   display: flex;
   justify-content: flex-end;
   gap: 10px;
@@ -89,3 +93,4 @@
   color: #27ae60;
   font-weight: bold;
 }
+
