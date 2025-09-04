@@ -5,7 +5,7 @@ from rest_framework.response import Response
 from rest_framework_simplejwt.tokens import RefreshToken
 
 from .models import CustomUser
-from .serialzers import RegisterSerializer, LoginSerializer, UserSerializer
+from .serialzers import RegisterSerializer, LoginSerializer, UserSerializer, UpdateUserSerializer
 
 class RegisterView(generics.CreateAPIView):
     queryset = CustomUser.objects.all()
@@ -65,3 +65,18 @@ class DeleteUserView(APIView):
             {"message": "Delete success"}, status=status.HTTP_204_NO_CONTENT
         )
 
+
+class UpdateUserView(generics.UpdateAPIView):
+    serializer_class = UpdateUserSerializer
+    permission_classes = [permissions.IsAuthenticated]
+
+    def get_object(self):
+        return self.request.user
+
+    def update(self, request, *args, **kwargs):
+        try:
+            super().update(request, *args, **kwargs)
+            return Response({"message": "비밀번호가 성공적으로 변경되었습니다."}, status=status.HTTP_200_OK)
+
+        except Exception as e:
+            return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)

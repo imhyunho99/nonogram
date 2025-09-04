@@ -31,7 +31,7 @@ class LoginSerializer(serializers.Serializer):
         raise serializers.ValidationError("Validation ERR")
 
 
-class UpdateUserView(serializers.Serializer):
+class UpdateUserSerializer(serializers.Serializer):
     old_password = serializers.CharField(write_only=True, required=True)
     new_password = serializers.CharField(write_only=True, required=True)
 
