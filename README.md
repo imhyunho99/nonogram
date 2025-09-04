@@ -4,7 +4,7 @@ Nonogram Generator는 사용자가 업로드한 이미지를 기반으로 퍼즐
 그리드 사이즈를 설정하면 해당 이미지로부터 네모로직 퍼즐이 생성되며,  
 React 기반 UI를 통해 게임처럼 직접 플레이할 수 있습니다.
 
-Django REST Framework 백엔드와 React 프론트엔드로 구성되며, Oracle Cloud Free Tier에서 배포 중입니다.
+Django REST Framework 백엔드와 React 프론트엔드로 구성되며, Oracle Cloud 에서 배포 중입니다.
 
 ## 데모
 
@@ -52,7 +52,7 @@ https://nonogram.duckdns.org/
 
 ```bash
 nonogram/
-├── backend/
+├── nonogram/
 │   ├── nonogram/             # Django 설정 및 루트 URL
 │   ├── image/                # 이미지 및 퍼즐 관련 앱
 │   │   ├── models.py
