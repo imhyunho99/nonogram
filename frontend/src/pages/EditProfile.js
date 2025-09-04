@@ -33,7 +33,7 @@ function EditProfile() {
     }
 
     try {
-      await axios.put('/user/update/', {
+      await axios.patch('/user/update/', {
         old_password: currentPassword,   // ✅ 서버가 이해하는 키
         new_password: newPassword,
       }, {
