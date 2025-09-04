@@ -34,7 +34,7 @@ function EditProfile() {
 
     try {
       await axios.put('/user/update/', {
-        current_password: currentPassword,
+        old_password: currentPassword,   // ✅ 서버가 이해하는 키
         new_password: newPassword,
       }, {
         headers: { Authorization: `Bearer ${token}` },

@@ -1,6 +1,6 @@
 from django.contrib.auth import authenticate
 from rest_framework import serializers
-
+from django.contrib.auth import password_validation
 from .models import CustomUser
 
 
@@ -31,9 +31,15 @@ class LoginSerializer(serializers.Serializer):
         raise serializers.ValidationError("Validation ERR")
 
 
-class UpdateUserSerializer(serializers.Serializer):
+
+
+class UpdateUserSerializer(serializers.ModelSerializer):
     old_password = serializers.CharField(write_only=True, required=True)
     new_password = serializers.CharField(write_only=True, required=True)
+
+    class Meta:
+        model = CustomUser
+        fields = ("old_password", "new_password")
 
     def validate_old_password(self, value):
         user = self.context['request'].user
@@ -49,6 +55,7 @@ class UpdateUserSerializer(serializers.Serializer):
         instance.set_password(validated_data['new_password'])
         instance.save()
         return instance
+
 
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
