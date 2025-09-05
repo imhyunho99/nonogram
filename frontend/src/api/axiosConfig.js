@@ -2,7 +2,7 @@
 import axios from 'axios';
 import { v4 as uuidv4 } from 'uuid';
 
-axios.defaults.baseURL = '/api/';
+axios.defaults.baseURL = 'https://nonogram.duckdns.org/api/';
 
 axios.interceptors.request.use((config) => {
   // 토큰이 필요 없는 공개 경로 목록

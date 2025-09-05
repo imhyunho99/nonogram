@@ -80,6 +80,10 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
+CORS_ALLOWED_ORIGINS = [
+    "https://nonogram.duckdns.org",
+]
+
 ROOT_URLCONF = 'nonogram.urls'
 
 TEMPLATES = [
