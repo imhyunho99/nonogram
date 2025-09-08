@@ -66,12 +66,16 @@ class DeleteUserView(APIView):
         )
 
 
-class UpdateUserView(generics.UpdateAPIView):
-    serializer_class = UpdateUserSerializer
+class UpdateUserView(APIView):
     permission_classes = [permissions.IsAuthenticated]
 
-    def get_object(self):
-        return self.request.user
+    def patch(self, request):
+        serializer = UpdateUserSerializer(
+            data=request.data, context={'request': request}
+        )
+        serializer.is_valid(raise_exception=True)
 
-    def patch(self, request, *args, **kwargs):
-        return super().partial_update(request, *args, **kwargs)
+        user = request.user
+        serializer.update(user, serializer.validated_data)
+
+        return Response({"message": "비밀번호가 성공적으로 변경되었습니다."}, status=200)

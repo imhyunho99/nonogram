@@ -5,12 +5,10 @@ import { v4 as uuidv4 } from 'uuid';
 axios.defaults.baseURL = 'https://nonogram.duckdns.org/api/';
 
 axios.interceptors.request.use((config) => {
-  // 토큰이 필요 없는 공개 경로 목록
   const publicPaths = ['/user/register/', '/user/login/'];
 
   const token = localStorage.getItem('access');
 
-  // 토큰이 존재하고, 현재 요청 경로가 공개 경로가 아닐 때만 헤더에 토큰 추가
   if (token && !publicPaths.includes(config.url)) {
     config.headers.Authorization = `Bearer ${token}`;
   }
