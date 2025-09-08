@@ -73,8 +73,10 @@ class UpdateUserView(APIView):
         serializer = UpdateUserSerializer(
             data=request.data, context={'request': request}
         )
-        serializer.is_valid(raise_exception=True)
 
+        if not serializer.is_valid():
+            print("serializer.errors:", serializer.errors)
+            return Response(serializer.errors, status=400)
         user = request.user
         serializer.update(user, serializer.validated_data)
 

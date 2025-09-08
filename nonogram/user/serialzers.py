@@ -33,8 +33,7 @@ class LoginSerializer(serializers.Serializer):
 class UpdateUserSerializer(serializers.Serializer):
     old_password = serializers.CharField(write_only=True, required=True)
     new_password = serializers.CharField(write_only=True, required=True)
-    print("old_password:", old_password)
-    print("new_password:", new_password)
+    
     def validate_old_password(self, value):
         user = self.context['request'].user
         if not user.check_password(value):
