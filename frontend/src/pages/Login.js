@@ -22,11 +22,9 @@ function Login({ onLogin }) {
     } catch (error) {
       console.error("로그인 실패! 전체 에러 객체:", error); // 전체 에러 확인용
       if (error.response) {
-        // 서버가 응답을 보냈을 경우, 그 내용을 출력합니다.
         console.error("🔥 서버 응답 데이터:", error.response.data);
         alert('로그인 실패: ' + JSON.stringify(error.response.data));
       } else {
-        // 네트워크 오류 등 서버 응답이 없는 경우
         alert('유효하지 않은 회원정보이거나 네트워크에 문제가 있습니다.');
       }
       // --------------------------

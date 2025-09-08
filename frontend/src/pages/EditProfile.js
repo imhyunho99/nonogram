@@ -36,8 +36,6 @@ function EditProfile() {
       await axios.patch('/user/update/', {
         old_password: currentPassword,
         new_password: newPassword,
-        console.log("currentPassword", currentPassword)
-        console.log("newPassword", newPassword)
       }, {
         headers: { Authorization: `Bearer ${token}` },
       });
