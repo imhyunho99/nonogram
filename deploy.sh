@@ -16,9 +16,8 @@ echo "🖼️  Frontend build"
 cd $FRONTEND_DIR
 sudo npm run build
 
-echo "📂 Migration & Static"
+echo "📂 Migration"
 python manage.py migrate
-python manage.py collectstati
 
 echo "♻️ 무중단 리로드"
 touch  /home/ubuntu/nonogram/reload.txt

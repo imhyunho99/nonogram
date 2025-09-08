@@ -6,7 +6,6 @@ function Login({ onLogin }) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const navigate = useNavigate();
-
   const handleSubmit = async (e) => {
     e.preventDefault();
     
@@ -21,7 +20,6 @@ function Login({ onLogin }) {
 
       navigate('/home');
     } catch (error) {
-      // --- 👇 여기를 수정했습니다 ---
       console.error("로그인 실패! 전체 에러 객체:", error); // 전체 에러 확인용
       if (error.response) {
         // 서버가 응답을 보냈을 경우, 그 내용을 출력합니다.
@@ -41,7 +39,7 @@ function Login({ onLogin }) {
 
   return (
     <div style={styles.container}>
-      <h2>🔐 로그인</h2>
+      <h2> 로그인</h2>
       <form onSubmit={handleSubmit} style={styles.form}>
         <input
           type="email"
