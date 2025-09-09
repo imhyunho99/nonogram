@@ -39,10 +39,10 @@ print(MEDIA_ROOT)
 # See https://docs.djangoproject.com/en/5.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-z^xdhi5n#!(i!8p(kiuo*6dr$*bku&^hk!zp!r&sn4nm^4^_c9'
+SECRET_KEY = config('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = config('DEBUG', default=False, cast=bool)
 
 ALLOWED_HOSTS = ["localhost", "140.245.71.233", "nonogram.duckdns.org","127.0.0.1"]
 STATIC_URL = '/static/'
