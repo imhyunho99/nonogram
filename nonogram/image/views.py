@@ -23,6 +23,8 @@ class OriginImageCreateView(generics.ListCreateAPIView):  #collect image data fr
         if serializer.is_valid():
             serializer.save(user=request.user)
             return Response(serializer.data, status=status.HTTP_201_CREATED)
+        else:
+            print(serializer.error())
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 class NonogramImageCreateView(generics.CreateAPIView):
