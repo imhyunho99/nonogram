@@ -16,13 +16,16 @@ import sentry_sdk
 from sentry_sdk.integrations.django import DjangoIntegration
 from decouple import config
 
-sentry_sdk.init(
-    dsn=config("SENTRY_DSN"),
-    integrations=[
-        DjangoIntegration(),
-    ],
-    traces_sample_rate = 1.0,
-)
+# Initialize Sentry only if DSN is provided
+sentry_dsn = config("SENTRY_DSN", default=None)
+if sentry_dsn:
+    sentry_sdk.init(
+        dsn=sentry_dsn,
+        integrations=[
+            DjangoIntegration(),
+        ],
+        traces_sample_rate = 1.0,
+    )
 
 
 from pathlib import Path
@@ -39,7 +42,7 @@ print(MEDIA_ROOT)
 # See https://docs.djangoproject.com/en/5.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = config('SECRET_KEY')
+SECRET_KEY = config('SECRET_KEY', default='django-insecure-z^xdhi5n#!(i!8p(kiuo*6dr$*bku&^hk!zp!r&sn4nm^4^_c9')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = config('DEBUG', default=False, cast=bool)

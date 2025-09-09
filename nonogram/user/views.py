@@ -5,7 +5,7 @@ from rest_framework.response import Response
 from rest_framework_simplejwt.tokens import RefreshToken
 
 from .models import CustomUser
-from .serialzers import RegisterSerializer, LoginSerializer, UserSerializer, UpdateUserSerializer
+from .serializers import RegisterSerializer, LoginSerializer, UserSerializer, UpdateUserSerializer
 
 class RegisterView(generics.CreateAPIView):
     queryset = CustomUser.objects.all()
