@@ -1,3 +1,9 @@
+> 🇬🇧 **English summary** — Turns any uploaded image into a playable nonogram (picross) puzzle via OpenCV edge detection, with a React UI over a Django REST Framework backend.
+>
+> 🇰🇷 한국어 상세 설명은 아래에 있습니다.
+
+---
+
 # Nonogram Generator
 
 Nonogram Generator는 사용자가 업로드한 이미지를 기반으로 퍼즐을 생성하는 웹 서비스입니다.  
