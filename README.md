@@ -1,6 +1,4 @@
-> 🇬🇧 **English summary** — Turns any uploaded image into a playable nonogram (picross) puzzle via OpenCV edge detection, with a React UI over a Django REST Framework backend.
->
-> 🇰🇷 한국어 상세 설명은 아래에 있습니다.
+> Turns any uploaded image into a playable nonogram (picross) puzzle using OpenCV edge detection, with a React UI over a Django REST Framework backend.
 
 ---
 
